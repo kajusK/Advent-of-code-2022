@@ -34,32 +34,9 @@ namespace Day09
             return (x: tail.x + tail_x_dist, y: tail.y + tail_y_dist);
         }
 
-        public static int Part1(IEnumerable<List<string>> input)
+        public static int Run(IEnumerable<List<string>> input, List<(int x, int y)> tails)
         {
             var head = (x: 0, y: 0);
-            var tail = (x: 0, y: 0);
-            var visited = new List<(int, int)> { head };
-
-            foreach (var step in input)
-            {
-                var dir = step[0][0];
-                var dist = Int32.Parse(step[1]);
-
-                for (int i = 0; i < dist; i++)
-                {
-                    head = Program.MoveHead(head, dir);
-                    tail = Program.MoveTail(tail, head);
-                    visited.Add(tail);
-                }
-            }
-
-            return visited.Distinct().Count();
-        }
-
-        public static int Part2(IEnumerable<List<string>> input)
-        {
-            var head = (x: 0, y: 0);
-            var tails = Enumerable.Range(0, 9).Select(x => (x: 0, y: 0)).ToList();
             var visited = new List<(int, int)> { head };
 
             foreach (var step in input)
@@ -85,9 +62,10 @@ namespace Day09
             var input = System.IO.File.ReadAllLines("./input.txt").Select(
                     line => line.Split(' ').ToList()
                 );
+            var tails = Enumerable.Range(0, 9).Select(x => (x: 0, y: 0)).ToList();
 
-            Console.WriteLine($"Part 1: {Program.Part1(input)}");
-            Console.WriteLine($"Part 2: {Program.Part2(input)}");
+            Console.WriteLine($"Part 1: {Program.Run(input, new List<(int, int)> { tails.First() })}");
+            Console.WriteLine($"Part 2: {Program.Run(input, tails)}");
         }
     }
 }
